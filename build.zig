@@ -10,7 +10,7 @@ pub fn build(b: *std.Build) void {
     // Server executable
     const server = b.addExecutable(.{
         .name = "grpc-server",
-        .root_module_file = b.path("src/server.zig"), // ✅ use root_module_file
+        .root_source_file = b.path("src/server.zig"), // ✅ use root_module_file
         .target = target,
         .optimize = optimize,
     });
