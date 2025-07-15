@@ -4,7 +4,8 @@
     .dependencies = .{
         .spice = .{
             .url = "https://github.com/judofyr/spice/archive/refs/heads/main.tar.gz",
-            .hash = "12345", // Replace with actual hash after first build
+            .hash = "...",
+            .lazy = true,
         },
     },
     .paths = .{
