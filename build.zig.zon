@@ -7,4 +7,10 @@
             .hash = "12345", // Replace with actual hash after first build
         },
     },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src", // assuming your Zig code is in `src/`
+        // Add more files if needed (LICENSE, README, etc.)
+    },
 }
