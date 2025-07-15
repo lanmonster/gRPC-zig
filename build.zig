@@ -5,34 +5,26 @@ pub fn build(b: *std.Build) void {
     const optimize = b.standardOptimizeOption(.{});
 
     const spice_dep = b.dependency("spice", .{});
-    const spice_mod = spice_dep.module("spice"); // Or another path like "src" if needed
+    const spice_mod = spice_dep.module("spice");
 
-    // Server executable
-    const server = b.addExecutable(.{
-        .name = "grpc-server",
-        .root_source_file = b.path("src/server.zig"), // ✅ use root_module_file
-        .target = target,
-        .optimize = optimize,
-    });
-    server.root_module.addImport("spice", spice_mod); // ✅ use root_module.addImport()
+    // Server
+    const server = b.addExecutable("grpc-server", "src/server.zig");
+    server.setTarget(target);
+    server.setBuildMode(optimize);
+    server.root_module.addImport("spice", spice_mod);
     b.installArtifact(server);
 
-    // Client executable
-    const client = b.addExecutable(.{
-        .name = "grpc-client",
-        .root_module_file = b.path("src/client.zig"),
-        .target = target,
-        .optimize = optimize,
-    });
+    // Client
+    const client = b.addExecutable("grpc-client", "src/client.zig");
+    client.setTarget(target);
+    client.setBuildMode(optimize);
     client.root_module.addImport("spice", spice_mod);
     b.installArtifact(client);
 
     // Tests
-    const tests = b.addTest(.{
-        .root_module_file = b.path("src/tests.zig"),
-        .target = target,
-        .optimize = optimize,
-    });
+    const tests = b.addTest("src/tests.zig");
+    tests.setTarget(target);
+    tests.setBuildMode(optimize);
     tests.root_module.addImport("spice", spice_mod);
 
     const run_tests = b.addRunArtifact(tests);
