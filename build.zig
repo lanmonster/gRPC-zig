@@ -7,24 +7,29 @@ pub fn build(b: *std.Build) void {
     const spice_dep = b.dependency("spice", .{});
     const spice_mod = spice_dep.module("spice");
 
-    // Server
-    const server = b.addExecutable("grpc-server", "src/server.zig");
-    server.setTarget(target);
-    server.setBuildMode(optimize);
+    const server = b.addExecutable(.{
+        .name = "grpc-server",
+        .root_src = b.path("src/server.zig"), // ✅ works for your Zig version
+        .target = target,
+        .optimize = optimize,
+    });
     server.root_module.addImport("spice", spice_mod);
     b.installArtifact(server);
 
-    // Client
-    const client = b.addExecutable("grpc-client", "src/client.zig");
-    client.setTarget(target);
-    client.setBuildMode(optimize);
+    const client = b.addExecutable(.{
+        .name = "grpc-client",
+        .root_src = b.path("src/client.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
     client.root_module.addImport("spice", spice_mod);
     b.installArtifact(client);
 
-    // Tests
-    const tests = b.addTest("src/tests.zig");
-    tests.setTarget(target);
-    tests.setBuildMode(optimize);
+    const tests = b.addTest(.{
+        .root_src = b.path("src/tests.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
     tests.root_module.addImport("spice", spice_mod);
 
     const run_tests = b.addRunArtifact(tests);
