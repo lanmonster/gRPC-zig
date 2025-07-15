@@ -1,5 +1,5 @@
 .{
-    .name = "grpc-zig",
+    .name = .grpc_zig,
     .version = "0.1.0",
     .dependencies = .{
         .spice = .{
